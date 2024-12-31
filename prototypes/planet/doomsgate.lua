@@ -1,4 +1,6 @@
 local asteroid_util = require("__space-age__.prototypes.planet.asteroid-spawn-definitions")
+local doomsgate_map_gen = require("__doomsgate__/prototypes/planet/doomsgate-map-gen")
+
 
 merge = function(old, new)
     if not old then
@@ -27,6 +29,7 @@ data:extend { merge(data.raw.planet.vulcanus, {
     icon = "__space-age__/graphics/icons/vulcanus.png",
     starmap_icon = "__space-age__/graphics/icons/starmap-planet-vulcanus.png",
     starmap_icon_size = 512,
+    map_gen_settings = doomsgate_map_gen,
 }) }
 
 data:extend { {
