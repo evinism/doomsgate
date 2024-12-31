@@ -17,7 +17,7 @@ merge = function(old, new)
 end
 
 
-data:extend {merge(data.raw.planet.vulcanus, {
+data:extend { merge(data.raw.planet.vulcanus, {
     name = "doomsgate",
     order = "g[doomsgate]",
     distance = 5,
@@ -27,9 +27,9 @@ data:extend {merge(data.raw.planet.vulcanus, {
     icon = "__space-age__/graphics/icons/vulcanus.png",
     starmap_icon = "__space-age__/graphics/icons/starmap-planet-vulcanus.png",
     starmap_icon_size = 512,
-})}
+}) }
 
-data:extend{{
+data:extend { {
     type = "space-connection",
     name = "vulcanus-doomsgate",
     subgroup = "planet-connections",
@@ -39,4 +39,4 @@ data:extend{{
     length = 15000,
     asteroid_spawn_definitions = asteroid_util.spawn_definitions(asteroid_util.vulcanus_gleba),
     icon = "__space-age__/graphics/icons/vulcanus.png",
-}}
+} }
