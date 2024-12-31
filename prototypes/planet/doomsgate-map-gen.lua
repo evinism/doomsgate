@@ -5,57 +5,57 @@ data:extend{
   ---- Constants
   {
     type = "noise-expression",
-    name = "vulcanus_ore_spacing",
+    name = "doomsgate_ore_spacing",
     expression = 128
   },
   {
     type = "noise-expression",
-    name = "vulcanus_shared_influence",
+    name = "doomsgate_shared_influence",
     expression = 105 * 3
   },
   {
     type = "noise-expression",
-    name = "vulcanus_biome_contrast",
+    name = "doomsgate_biome_contrast",
     expression = 2 -- higher values mean sharper transitions
   },
   {
     type = "noise-expression",
-    name = "vulcanus_cracks_scale",
+    name = "doomsgate_cracks_scale",
     expression = 0.325
   },
   --used to be segmenataion_multiplier
   {
     type = "noise-expression",
-    name = "vulcanus_segment_scale",
+    name = "doomsgate_segment_scale",
     expression = 1
   },
   {
     --functions more like a cliffiness multiplier as all the mountain tiles have it offset.
     type = "noise-expression",
-    name = "vulcanus_mountains_elevation_multiplier",
-    expression = 1.5
+    name = "doomsgate_mountains_elevation_multiplier",
+    expression = 0.5
   },
 
   ---- HELPERS
   {
     type = "noise-expression",
-    name = "vulcanus_starting_area_multiplier",
+    name = "doomsgate_starting_area_multiplier",
     -- reduced richness for starting resources
-    expression = "lerp(1, 0.06, clamp(0.5 + vulcanus_starting_circle, 0, 1))"
+    expression = "lerp(1, 0.06, clamp(0.5 + doomsgate_starting_circle, 0, 1))"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_richness_multiplier",
+    name = "doomsgate_richness_multiplier",
     expression = "6 + distance / 10000"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_scale_multiplier",
+    name = "doomsgate_scale_multiplier",
     expression = "slider_rescale(control:vulcanus_volcanism:frequency, 3)"
   },
   {
     type = "noise-function",
-    name = "vulcanus_detail_noise",
+    name = "doomsgate_detail_noise",
     parameters = {"seed1", "scale", "octaves", "magnitude"},
     expression = "multioctave_noise{x = x,\z
                                     y = y,\z
@@ -68,7 +68,7 @@ data:extend{
   },
   {
     type = "noise-function",
-    name = "vulcanus_plasma",
+    name = "doomsgate_plasma",
     parameters = {"seed", "scale", "scale2", "magnitude1", "magnitude2"},
     expression = "abs(basis_noise{x = x,\z
                                   y = y,\z
@@ -85,13 +85,13 @@ data:extend{
   },
   {
     type = "noise-function",
-    name = "vulcanus_threshold",
+    name = "doomsgate_threshold",
     parameters = {"value", "threshold"},
     expression = "(value - (1 - threshold)) * (1 / threshold)"
   },
   {
     type = "noise-function",
-    name = "vulcanus_contrast",
+    name = "doomsgate_contrast",
     parameters = {"value", "c"},
     expression = "clamp(value, c, 1) - c"
   },
@@ -99,21 +99,21 @@ data:extend{
   ---- ELEVATION
   {
     type = "noise-expression",
-    name = "vulcanus_elevation",
+    name = "doomsgate_elevation",
     --intended_property = "elevation",
-    expression = "max(-500, vulcanus_elev)"
+    expression = "max(-500, doomsgate_elev)"
   },
   ---- TEMPERATURE: Used to place hot vs cold tilesets, e.g. cold - warm - hot cracks.
   {
     type = "noise-expression",
-    name = "vulcanus_temperature",
+    name = "doomsgate_temperature",
     --intended_property = "temperature",
     expression = "100\z
                   + 100 * var('control:temperature:bias')\z
-                  - min(vulcanus_elev, vulcanus_elev / 100)\z
-                  - 2 * vulcanus_moisture\z
-                  - 1 * vulcanus_aux\z
-                  - 20 * vulcanus_ashlands_biome\z
+                  - min(doomsgate_elev, doomsgate_elev / 100)\z
+                  - 2 * doomsgate_moisture\z
+                  - 1 * doomsgate_aux\z
+                  - 20 * doomsgate_ashlands_biome\z
                   + 200 * max(0, mountain_volcano_spots - 0.6)"
   },
   ---- AUX (0-1): On vulcanus this is Rockiness.
@@ -121,7 +121,7 @@ data:extend{
   ---- 1 are rocky "islands" for rock clusters, chimneys, etc.
   {
     type = "noise-expression",
-    name = "vulcanus_aux",
+    name = "doomsgate_aux",
     --intended_property = "aux",
     expression = "clamp(min(abs(multioctave_noise{x = x,\z
                                                   y = y,\z
@@ -131,7 +131,7 @@ data:extend{
                                                   persistence = 0.6,\z
                                                   input_scale = 0.2,\z
                                                   output_scale = 0.6}),\z
-                            0.3 - 0.6 * vulcanus_flood_paths), 0, 1)"
+                            0.3 - 0.6 * doomsgate_flood_paths), 0, 1)"
   },
   ---- MOISTURE (0-1): On vulcanus used for vegetation clustering.
   ---- 0 is no vegetation, such as ash bowels in the ashlands.
@@ -139,7 +139,7 @@ data:extend{
   ---- As this drives the ash bowls, it also has an impact on small rock & pebble placement.
   {
     type = "noise-expression",
-    name = "vulcanus_moisture",
+    name = "doomsgate_moisture",
     --intended_property = "moisture",
     expression = "clamp(1\z
                         - abs(multioctave_noise{x = x,\z
@@ -158,80 +158,80 @@ data:extend{
                                                 persistence = 0.62,\z
                                                 input_scale = 0.051144353,\z
                                                 output_scale = 0.25})\z
-                        - 0.2 * vulcanus_flood_cracks_a, 0, 1)"
+                        - 0.2 * doomsgate_flood_cracks_a, 0, 1)"
   },
 
   ---- Starting Area blobs
   {
     type = "noise-expression",
-    name = "vulcanus_starting_area_radius",
+    name = "doomsgate_starting_area_radius",
     expression = "0.7 * 0.75"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_starting_direction",
+    name = "doomsgate_starting_direction",
     expression = "-1 + 2 * (map_seed_small & 1)"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_ashlands_angle",
+    name = "doomsgate_ashlands_angle",
     expression = "map_seed_normalized * 3600"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_mountains_angle",
-    expression = "vulcanus_ashlands_angle + 120 * vulcanus_starting_direction"
+    name = "doomsgate_mountains_angle",
+    expression = "doomsgate_ashlands_angle + 120 * doomsgate_starting_direction"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_basalts_angle",
-    expression = "vulcanus_ashlands_angle + 240 * vulcanus_starting_direction"
+    name = "doomsgate_basalts_angle",
+    expression = "doomsgate_ashlands_angle + 240 * doomsgate_starting_direction"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_ashlands_start",
+    name = "doomsgate_ashlands_start",
     -- requires more influence because it is smaller and has no mountain boost
-    expression = "4 * starting_spot_at_angle{ angle = vulcanus_ashlands_angle,\z
-                                              distance = 170 * vulcanus_starting_area_radius,\z
-                                              radius = 350 * vulcanus_starting_area_radius,\z
-                                              x_distortion = 0.1 * vulcanus_starting_area_radius * (vulcanus_wobble_x + vulcanus_wobble_large_x + vulcanus_wobble_huge_x),\z
-                                              y_distortion = 0.1 * vulcanus_starting_area_radius * (vulcanus_wobble_y + vulcanus_wobble_large_y + vulcanus_wobble_huge_y)}"
+    expression = "4 * starting_spot_at_angle{ angle = doomsgate_ashlands_angle,\z
+                                              distance = 170 * doomsgate_starting_area_radius,\z
+                                              radius = 350 * doomsgate_starting_area_radius,\z
+                                              x_distortion = 0.1 * doomsgate_starting_area_radius * (doomsgate_wobble_x + doomsgate_wobble_large_x + doomsgate_wobble_huge_x),\z
+                                              y_distortion = 0.1 * doomsgate_starting_area_radius * (doomsgate_wobble_y + doomsgate_wobble_large_y + doomsgate_wobble_huge_y)}"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_basalts_start",
-    expression = "2 * starting_spot_at_angle{ angle = vulcanus_basalts_angle,\z
+    name = "doomsgate_basalts_start",
+    expression = "2 * starting_spot_at_angle{ angle = doomsgate_basalts_angle,\z
                                               distance = 250,\z
-                                              radius = 550 * vulcanus_starting_area_radius,\z
-                                              x_distortion = 0.1 * vulcanus_starting_area_radius * (vulcanus_wobble_x + vulcanus_wobble_large_x + vulcanus_wobble_huge_x),\z
-                                              y_distortion = 0.1 * vulcanus_starting_area_radius * (vulcanus_wobble_y + vulcanus_wobble_large_y + vulcanus_wobble_huge_y)}"
+                                              radius = 550 * doomsgate_starting_area_radius,\z
+                                              x_distortion = 0.1 * doomsgate_starting_area_radius * (doomsgate_wobble_x + doomsgate_wobble_large_x + doomsgate_wobble_huge_x),\z
+                                              y_distortion = 0.1 * doomsgate_starting_area_radius * (doomsgate_wobble_y + doomsgate_wobble_large_y + doomsgate_wobble_huge_y)}"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_mountains_start",
-    expression = "2 * starting_spot_at_angle{ angle = vulcanus_mountains_angle,\z
-                                              distance = 250 * vulcanus_starting_area_radius,\z
-                                              radius = 500 * vulcanus_starting_area_radius,\z
-                                              x_distortion = 0.05 * vulcanus_starting_area_radius * (vulcanus_wobble_x + vulcanus_wobble_large_x + vulcanus_wobble_huge_x),\z
-                                              y_distortion = 0.05 * vulcanus_starting_area_radius * (vulcanus_wobble_y + vulcanus_wobble_large_y + vulcanus_wobble_huge_y)}"
+    name = "doomsgate_mountains_start",
+    expression = "2 * starting_spot_at_angle{ angle = doomsgate_mountains_angle,\z
+                                              distance = 250 * doomsgate_starting_area_radius,\z
+                                              radius = 500 * doomsgate_starting_area_radius,\z
+                                              x_distortion = 0.05 * doomsgate_starting_area_radius * (doomsgate_wobble_x + doomsgate_wobble_large_x + doomsgate_wobble_huge_x),\z
+                                              y_distortion = 0.05 * doomsgate_starting_area_radius * (doomsgate_wobble_y + doomsgate_wobble_large_y + doomsgate_wobble_huge_y)}"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_starting_area", -- used for biome blending
-    expression = "clamp(max(vulcanus_basalts_start, vulcanus_mountains_start, vulcanus_ashlands_start), 0, 1)"
+    name = "doomsgate_starting_area", -- used for biome blending
+    expression = "clamp(max(doomsgate_basalts_start, doomsgate_mountains_start, doomsgate_ashlands_start), 0, 1)"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_starting_circle", -- Used to push random ores away. No not clamp.
+    name = "doomsgate_starting_circle", -- Used to push random ores away. No not clamp.
     -- 600-650 circle
-    expression = "1 + vulcanus_starting_area_radius * (300 - distance) / 50"
+    expression = "1 + doomsgate_starting_area_radius * (300 - distance) / 50"
   },
 
   ---- BIOME NOISE
 
   {
     type = "noise-function",
-    name = "vulcanus_biome_noise",
+    name = "doomsgate_biome_noise",
     parameters = {"seed1", "scale"},
     expression = "multioctave_noise{x = x,\z
                                     y = y,\z
@@ -239,34 +239,34 @@ data:extend{
                                     seed0 = map_seed,\z
                                     seed1 = seed1,\z
                                     octaves = 5,\z
-                                    input_scale = vulcanus_scale_multiplier / scale}"
+                                    input_scale = doomsgate_scale_multiplier / scale}"
   },
   {
     type = "noise-function",
-    name = "vulcanus_biome_multiscale",
+    name = "doomsgate_biome_multiscale",
     parameters = {"seed1", "scale", "bias"},
-    expression = "bias + lerp(vulcanus_biome_noise(seed1, scale * 0.5),\z
-                              vulcanus_biome_noise(seed1 + 1000, scale),\z
+    expression = "bias + lerp(doomsgate_biome_noise(seed1, scale * 0.5),\z
+                              doomsgate_biome_noise(seed1 + 1000, scale),\z
                               clamp(distance / 10000, 0, 1))"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_mountains_biome_noise",
-    expression = "vulcanus_biome_multiscale{seed1 = 342,\z
+    name = "doomsgate_mountains_biome_noise",
+    expression = "doomsgate_biome_multiscale{seed1 = 342,\z
                                             scale = 60,\z
                                             bias = 0}"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_ashlands_biome_noise",
-    expression = "vulcanus_biome_multiscale{seed1 = 12416,\z
+    name = "doomsgate_ashlands_biome_noise",
+    expression = "doomsgate_biome_multiscale{seed1 = 12416,\z
                                             scale = 40,\z
                                             bias = 0}"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_basalts_biome_noise",
-    expression = "vulcanus_biome_multiscale{seed1 = 42416,\z
+    name = "doomsgate_basalts_biome_noise",
+    expression = "doomsgate_biome_multiscale{seed1 = 42416,\z
                                             scale = 80,\z
                                             bias = 0}"
   },
@@ -274,51 +274,51 @@ data:extend{
 
   {
     type = "noise-expression",
-    name = "vulcanus_ashlands_raw",
-    expression = "lerp(vulcanus_ashlands_biome_noise, starting_weights, clamp(2 * vulcanus_starting_area, 0, 1))",
+    name = "doomsgate_ashlands_raw",
+    expression = "lerp(doomsgate_ashlands_biome_noise, starting_weights, clamp(2 * doomsgate_starting_area, 0, 1))",
     local_expressions =
     {
-      starting_weights = "-vulcanus_mountains_start + vulcanus_ashlands_start - vulcanus_basalts_start"
+      starting_weights = "-doomsgate_mountains_start + doomsgate_ashlands_start - doomsgate_basalts_start"
     }
   },
   {
     type = "noise-expression",
-    name = "vulcanus_basalts_raw",
-    expression = "lerp(vulcanus_basalts_biome_noise, starting_weights, clamp(2 * vulcanus_starting_area, 0, 1))",
+    name = "doomsgate_basalts_raw",
+    expression = "lerp(doomsgate_basalts_biome_noise, starting_weights, clamp(2 * doomsgate_starting_area, 0, 1))",
     local_expressions =
     {
-      starting_weights = "-vulcanus_mountains_start - vulcanus_ashlands_start + vulcanus_basalts_start"
+      starting_weights = "-doomsgate_mountains_start - doomsgate_ashlands_start + doomsgate_basalts_start"
     }
   },
 
   {
     type = "noise-expression",
-    name = "vulcanus_mountains_raw_pre_volcano",
-    expression = "lerp(vulcanus_mountains_biome_noise, starting_weights, clamp(2 * vulcanus_starting_area, 0, 1))",
+    name = "doomsgate_mountains_raw_pre_volcano",
+    expression = "lerp(doomsgate_mountains_biome_noise, starting_weights, clamp(2 * doomsgate_starting_area, 0, 1))",
     local_expressions =
     {
-      starting_weights = "vulcanus_mountains_start - vulcanus_ashlands_start - vulcanus_basalts_start"
+      starting_weights = "doomsgate_mountains_start - doomsgate_ashlands_start - doomsgate_basalts_start"
     }
   },
   {
     type = "noise-expression",
-    name = "vulcanus_mountains_biome_full_pre_volcano",
-    expression = "vulcanus_mountains_raw_pre_volcano - max(vulcanus_ashlands_raw, vulcanus_basalts_raw)"
+    name = "doomsgate_mountains_biome_full_pre_volcano",
+    expression = "doomsgate_mountains_raw_pre_volcano - max(doomsgate_ashlands_raw, doomsgate_basalts_raw)"
   },
 
   {
     type = "noise-expression",
     name = "mountain_volcano_spots",
-    expression = "max(vulcanus_starting_volcano_spot, raw_spots - starting_protector)",
+    expression = "max(doomsgate_starting_volcano_spot, raw_spots - starting_protector)",
     local_expressions =
     {
-      starting_protector = "clamp(starting_spot_at_angle{ angle = vulcanus_mountains_angle + 180 * vulcanus_starting_direction,\z
-                                                          distance = (400 * vulcanus_starting_area_radius) / 2,\z
-                                                          radius = 800 * vulcanus_starting_area_radius,\z
-                                                          x_distortion = vulcanus_wobble_x/2 + vulcanus_wobble_large_x/12 + vulcanus_wobble_huge_x/80,\z
-                                                          y_distortion = vulcanus_wobble_y/2 + vulcanus_wobble_large_y/12 + vulcanus_wobble_huge_y/80}, 0, 1)",
-      raw_spots = "spot_noise{x = x + vulcanus_wobble_x/2 + vulcanus_wobble_large_x/12 + vulcanus_wobble_huge_x/80,\z
-                              y = y + vulcanus_wobble_y/2 + vulcanus_wobble_large_y/12 + vulcanus_wobble_huge_y/80,\z
+      starting_protector = "clamp(starting_spot_at_angle{ angle = doomsgate_mountains_angle + 180 * doomsgate_starting_direction,\z
+                                                          distance = (400 * doomsgate_starting_area_radius) / 2,\z
+                                                          radius = 800 * doomsgate_starting_area_radius,\z
+                                                          x_distortion = doomsgate_wobble_x/2 + doomsgate_wobble_large_x/12 + doomsgate_wobble_huge_x/80,\z
+                                                          y_distortion = doomsgate_wobble_y/2 + doomsgate_wobble_large_y/12 + doomsgate_wobble_huge_y/80}, 0, 1)",
+      raw_spots = "spot_noise{x = x + doomsgate_wobble_x/2 + doomsgate_wobble_large_x/12 + doomsgate_wobble_huge_x/80,\z
+                              y = y + doomsgate_wobble_y/2 + doomsgate_wobble_large_y/12 + doomsgate_wobble_huge_y/80,\z
                               seed0 = map_seed,\z
                               seed1 = 1,\z
                               candidate_spot_count = 1,\z
@@ -333,99 +333,99 @@ data:extend{
                               spot_favorability_expression = volcano_area,\z
                               basement_value = 0,\z
                               maximum_spot_basement_radius = volcano_spot_radius}",
-      volcano_area = "lerp(vulcanus_mountains_biome_full_pre_volcano, 0, vulcanus_starting_area)",
+      volcano_area = "lerp(doomsgate_mountains_biome_full_pre_volcano, 0, doomsgate_starting_area)",
       volcano_spot_radius = "200 * volcanism",
       volcano_spot_spacing = "1500 * volcanism",
-      volcanism = "0.3 + 0.7 * slider_rescale(control:vulcanus_volcanism:size, 3) / slider_rescale(vulcanus_scale_multiplier, 3)",
+      volcanism = "0.3 + 0.7 * slider_rescale(control:vulcanus_volcanism:size, 3) / slider_rescale(doomsgate_scale_multiplier, 3)",
       volcanism_sq = "volcanism * volcanism"
     }
   },
   {
     type = "noise-expression",
-    name = "vulcanus_starting_volcano_spot",
-    expression = "clamp(starting_spot_at_angle{ angle = vulcanus_mountains_angle,\z
-                                                distance = 400 * vulcanus_starting_area_radius,\z
+    name = "doomsgate_starting_volcano_spot",
+    expression = "clamp(starting_spot_at_angle{ angle = doomsgate_mountains_angle,\z
+                                                distance = 400 * doomsgate_starting_area_radius,\z
                                                 radius = 200,\z
-                                                x_distortion = vulcanus_wobble_x/2 + vulcanus_wobble_large_x/12 + vulcanus_wobble_huge_x/80,\z
-                                                y_distortion = vulcanus_wobble_y/2 + vulcanus_wobble_large_y/12 + vulcanus_wobble_huge_y/80}, 0, 1)"
+                                                x_distortion = doomsgate_wobble_x/2 + doomsgate_wobble_large_x/12 + doomsgate_wobble_huge_x/80,\z
+                                                y_distortion = doomsgate_wobble_y/2 + doomsgate_wobble_large_y/12 + doomsgate_wobble_huge_y/80}, 0, 1)"
   },
 
   {
     type = "noise-expression",
-    name = "vulcanus_mountains_raw_volcano",
+    name = "doomsgate_mountains_raw_volcano",
     -- moderate influence for the outer 1/3 of the volcano, ramp to high influence for the middle third, and maxed for the innter third
-    expression = "0.5 * vulcanus_mountains_raw_pre_volcano + max(2 * mountain_volcano_spots, 10 * clamp((mountain_volcano_spots - 0.33) * 3, 0, 1))"
+    expression = "0.5 * doomsgate_mountains_raw_pre_volcano + max(2 * mountain_volcano_spots, 10 * clamp((mountain_volcano_spots - 0.33) * 3, 0, 1))"
   },
 
   -- full range biomes with no clamping, good for away-from-edge targeting.
   {
     type = "noise-expression",
-    name = "vulcanus_mountains_biome_full",
-    expression = "vulcanus_mountains_raw_volcano - max(vulcanus_ashlands_raw, vulcanus_basalts_raw)"
+    name = "doomsgate_mountains_biome_full",
+    expression = "doomsgate_mountains_raw_volcano - max(doomsgate_ashlands_raw, doomsgate_basalts_raw)"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_ashlands_biome_full",
-    expression = "vulcanus_ashlands_raw - max(vulcanus_mountains_raw_volcano, vulcanus_basalts_raw)"
+    name = "doomsgate_ashlands_biome_full",
+    expression = "doomsgate_ashlands_raw - max(doomsgate_mountains_raw_volcano, doomsgate_basalts_raw)"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_basalts_biome_full",
-    expression = "vulcanus_basalts_raw - max(vulcanus_mountains_raw_volcano, vulcanus_ashlands_raw)"
+    name = "doomsgate_basalts_biome_full",
+    expression = "doomsgate_basalts_raw - max(doomsgate_mountains_raw_volcano, doomsgate_ashlands_raw)"
   },
 
   -- clamped 0-1 biomes
   {
     type = "noise-expression",
-    name = "vulcanus_mountains_biome",
-    expression = "clamp(vulcanus_mountains_biome_full * vulcanus_biome_contrast, 0, 1)"
+    name = "doomsgate_mountains_biome",
+    expression = "clamp(doomsgate_mountains_biome_full * doomsgate_biome_contrast, 0, 1)"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_ashlands_biome",
-    expression = "clamp(vulcanus_ashlands_biome_full * vulcanus_biome_contrast, 0, 1)"
+    name = "doomsgate_ashlands_biome",
+    expression = "clamp(doomsgate_ashlands_biome_full * doomsgate_biome_contrast, 0, 1)"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_basalts_biome",
-    expression = "clamp(vulcanus_basalts_biome_full * vulcanus_biome_contrast, 0, 1)"
+    name = "doomsgate_basalts_biome",
+    expression = "clamp(doomsgate_basalts_biome_full * doomsgate_biome_contrast, 0, 1)"
   },
 
 
   {
     type = "noise-expression",
-    name = "vulcanus_resource_penalty",
+    name = "doomsgate_resource_penalty",
     expression = "random_penalty_inverse(2.5, 1)"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_wobble_x",
-    expression = "vulcanus_detail_noise{seed1 = 10, scale = 1/8, octaves = 2, magnitude = 4}"
+    name = "doomsgate_wobble_x",
+    expression = "doomsgate_detail_noise{seed1 = 10, scale = 1/8, octaves = 2, magnitude = 4}"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_wobble_y",
-    expression = "vulcanus_detail_noise{seed1 = 1010, scale = 1/8, octaves = 2, magnitude = 4}"
+    name = "doomsgate_wobble_y",
+    expression = "doomsgate_detail_noise{seed1 = 1010, scale = 1/8, octaves = 2, magnitude = 4}"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_wobble_large_x",
-    expression = "vulcanus_detail_noise{seed1 = 20, scale = 1/2, octaves = 2, magnitude = 50}"
+    name = "doomsgate_wobble_large_x",
+    expression = "doomsgate_detail_noise{seed1 = 20, scale = 1/2, octaves = 2, magnitude = 50}"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_wobble_large_y",
-    expression = "vulcanus_detail_noise{seed1 = 1020, scale = 1/2, octaves = 2, magnitude = 50}"
+    name = "doomsgate_wobble_large_y",
+    expression = "doomsgate_detail_noise{seed1 = 1020, scale = 1/2, octaves = 2, magnitude = 50}"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_wobble_huge_x",
-    expression = "vulcanus_detail_noise{seed1 = 30, scale = 2, octaves = 2, magnitude = 800}"
+    name = "doomsgate_wobble_huge_x",
+    expression = "doomsgate_detail_noise{seed1 = 30, scale = 2, octaves = 2, magnitude = 800}"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_wobble_huge_y",
-    expression = "vulcanus_detail_noise{seed1 = 1030, scale = 2, octaves = 2, magnitude = 800}"
+    name = "doomsgate_wobble_huge_y",
+    expression = "doomsgate_detail_noise{seed1 = 1030, scale = 2, octaves = 2, magnitude = 800}"
   },
 
   {
@@ -441,7 +441,7 @@ data:extend{
   {
     type = "noise-expression",
     name = "mountain_plasma",
-    expression = "vulcanus_plasma(102, 2.5, 10, 125, 625)"
+    expression = "doomsgate_plasma(102, 2.5, 10, 125, 625)"
   },
   {
     type = "noise-expression",
@@ -449,14 +449,14 @@ data:extend{
     expression = "lerp(max(clamp(mountain_plasma, -100, 10000), mountain_basis_noise),\z
                        mountain_plasma,\z
                        clamp(0.7 * mountain_basis_noise, 0, 1))\z
-                  * (1 - clamp(vulcanus_plasma(13, 2.5, 10, 0.15, 0.75), 0, 1))",
+                  * (1 - clamp(doomsgate_plasma(13, 2.5, 10, 0.15, 0.75), 0, 1))",
   },
   {
     type = "noise-expression",
     name = "mountain_lava_spots",
-    expression = "clamp(vulcanus_threshold(mountain_volcano_spots * 1.95 - 0.95,\z
-                                           0.4 * clamp(vulcanus_threshold(vulcanus_mountains_biome, 0.5), 0, 1))\z
-                                           * vulcanus_threshold(clamp(vulcanus_plasma(17453, 0.2, 0.4, 10, 20) / 20, 0, 1), 1.8),\z
+    expression = "clamp(doomsgate_threshold(mountain_volcano_spots * 1.95 - 0.95,\z
+                                           0.4 * clamp(doomsgate_threshold(doomsgate_mountains_biome, 0.5), 0, 1))\z
+                                           * doomsgate_threshold(clamp(doomsgate_plasma(17453, 0.2, 0.4, 10, 20) / 20, 0, 1), 1.8),\z
                         0, 1)"
   },
   {
@@ -467,100 +467,100 @@ data:extend{
   },
   {
     type = "noise-expression",
-    name = "vulcanus_mountains_func",
+    name = "doomsgate_mountains_func",
     expression = "lerp(mountain_elevation, 700 * volcano_inverted_peak(mountain_volcano_spots, 0.65), clamp(mountain_volcano_spots * 3, 0, 1))\z
      + 200 * (aux - 0.5) * (mountain_volcano_spots + 0.5)"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_ashlands_func",
+    name = "doomsgate_ashlands_func",
     expression = "300 + 0.001 * min(basis_noise{x = x,\z
                                                 y = y,\z
                                                 seed0 = map_seed,\z
                                                 seed1 = 12643,\z
-                                                input_scale = vulcanus_scale_multiplier / 50 / scale,\z
+                                                input_scale = doomsgate_scale_multiplier / 50 / scale,\z
                                                 output_scale = 150},\z
                                     basis_noise{x = x,\z
                                                 y = y,\z
                                                 seed0 = map_seed,\z
                                                 seed1 = 12643,\z
-                                                input_scale = vulcanus_scale_multiplier / 50 / scale,\z
+                                                input_scale = doomsgate_scale_multiplier / 50 / scale,\z
                                                 output_scale = 150})",
     local_expressions = {scale = 3}
   },
   {
     type = "noise-expression",
-    name = "vulcanus_hairline_cracks",
-    expression = "vulcanus_plasma(15223, 0.3 * vulcanus_cracks_scale, 0.6 * vulcanus_cracks_scale, 0.6, 1)"
+    name = "doomsgate_hairline_cracks",
+    expression = "doomsgate_plasma(15223, 0.3 * doomsgate_cracks_scale, 0.6 * doomsgate_cracks_scale, 0.6, 1)"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_flood_cracks_a",
-    expression = "lerp(min(vulcanus_plasma(7543, 2.5 * vulcanus_cracks_scale, 4 * vulcanus_cracks_scale, 0.5, 1),\z
-                           vulcanus_plasma(7443, 1.5 * vulcanus_cracks_scale, 3.5 * vulcanus_cracks_scale, 0.5, 1)),\z
+    name = "doomsgate_flood_cracks_a",
+    expression = "lerp(min(doomsgate_plasma(7543, 2.5 * doomsgate_cracks_scale, 4 * doomsgate_cracks_scale, 0.5, 1),\z
+                           doomsgate_plasma(7443, 1.5 * doomsgate_cracks_scale, 3.5 * doomsgate_cracks_scale, 0.5, 1)),\z
                        1,\z
-                       clamp(vulcanus_detail_noise(241, 2 * vulcanus_cracks_scale, 2, 0.25), 0, 1))"
+                       clamp(doomsgate_detail_noise(241, 2 * doomsgate_cracks_scale, 2, 0.25), 0, 1))"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_flood_cracks_b",
+    name = "doomsgate_flood_cracks_b",
     expression = "lerp(1,\z
-                       min(vulcanus_plasma(12223, 2 * vulcanus_cracks_scale, 3 * vulcanus_cracks_scale, 0.5, 1),\z
-                           vulcanus_plasma(152, 1 * vulcanus_cracks_scale, 1.5 * vulcanus_cracks_scale, 0.25, 0.5)) - 0.5,\z
-                       clamp(0.2 + vulcanus_detail_noise(821, 6 * vulcanus_cracks_scale, 2, 0.5), 0, 1))"
+                       min(doomsgate_plasma(12223, 2 * doomsgate_cracks_scale, 3 * doomsgate_cracks_scale, 0.5, 1),\z
+                           doomsgate_plasma(152, 1 * doomsgate_cracks_scale, 1.5 * doomsgate_cracks_scale, 0.25, 0.5)) - 0.5,\z
+                       clamp(0.2 + doomsgate_detail_noise(821, 6 * doomsgate_cracks_scale, 2, 0.5), 0, 1))"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_flood_paths",
+    name = "doomsgate_flood_paths",
     -- make paths through the lava cracks, get walkable areas above 0, the first value is the path height
     expression = "0.4\z
-                  - vulcanus_plasma(1543, 1.5 * vulcanus_cracks_scale, 3 * vulcanus_cracks_scale, 0.5, 1)\z
-                  + min(0, vulcanus_detail_noise(121, vulcanus_cracks_scale * 4, 2, 0.5))",
+                  - doomsgate_plasma(1543, 1.5 * doomsgate_cracks_scale, 3 * doomsgate_cracks_scale, 0.5, 1)\z
+                  + min(0, doomsgate_detail_noise(121, doomsgate_cracks_scale * 4, 2, 0.5))",
   },
   {
     type = "noise-expression",
-    name = "vulcanus_flood_basalts_func",
+    name = "doomsgate_flood_basalts_func",
     -- add hairline cracks to break up edges, crop hearilyie cracks peaks so it is more of a plates + cracks pattern
     -- lava level should be 0 and below, solid ground above 0
-    expression = "min(max(vulcanus_flood_cracks_a - 0.125, vulcanus_flood_paths), vulcanus_flood_cracks_b) + 0.3 * min(0.5, vulcanus_hairline_cracks)"
+    expression = "min(max(doomsgate_flood_cracks_a - 0.125, doomsgate_flood_paths), doomsgate_flood_cracks_b) + 0.3 * min(0.5, doomsgate_hairline_cracks)"
   },
 
   {
     type = "noise-expression",
-    name = "vulcanus_elevation_offset",
+    name = "doomsgate_elevation_offset",
     expression = "0"
   },
   {
     type = "noise-function",
-    name = "vulcanus_biome_blend",
+    name = "doomsgate_biome_blend",
     parameters = {"fade", "noise", "offset"},
     expression = "fade * (noise - offset)"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_elev",
-    expression = "vulcanus_elevation_offset\z
-                  + lerp(lerp(120 * vulcanus_basalt_lakes_multisample,\z
-                              20 + vulcanus_mountains_func * vulcanus_mountains_elevation_multiplier,\z
-                              vulcanus_mountains_biome),\z
-                         vulcanus_ashlands_func,\z
-                         vulcanus_ashlands_biome)",
+    name = "doomsgate_elev",
+    expression = "doomsgate_elevation_offset\z
+                  + lerp(lerp(120 * doomsgate_basalt_lakes_multisample,\z
+                              20 + doomsgate_mountains_func * doomsgate_mountains_elevation_multiplier,\z
+                              doomsgate_mountains_biome),\z
+                         doomsgate_ashlands_func,\z
+                         doomsgate_ashlands_biome)",
     local_expressions =
     {
-      vulcanus_basalt_lakes_multisample = "min(multisample(vulcanus_basalt_lakes, 0, 0),\z
-                                               multisample(vulcanus_basalt_lakes, 1, 0),\z
-                                               multisample(vulcanus_basalt_lakes, 0, 1),\z
-                                               multisample(vulcanus_basalt_lakes, 1, 1))"
+      doomsgate_basalt_lakes_multisample = "min(multisample(doomsgate_basalt_lakes, 0, 0),\z
+                                               multisample(doomsgate_basalt_lakes, 1, 0),\z
+                                               multisample(doomsgate_basalt_lakes, 0, 1),\z
+                                               multisample(doomsgate_basalt_lakes, 1, 1))"
     }
   },
   {
     type = "noise-expression",
-    name = "vulcanus_basalt_lakes",
+    name = "doomsgate_basalt_lakes",
     expression = "min(1,\z
-                      -0.2 + vulcanus_flood_basalts_func\z
-                      - 0.35 * clamp(vulcanus_contrast(vulcanus_detail_noise(837, 1/40, 4, 1.25), 0.95)\z
-                                     * vulcanus_contrast(vulcanus_detail_noise(234, 1/50, 4, 1), 0.95)\z
-                                     * vulcanus_detail_noise(643, 1/70, 4, 0.7),\z
+                      -0.2 + doomsgate_flood_basalts_func\z
+                      - 0.35 * clamp(doomsgate_contrast(doomsgate_detail_noise(837, 1/40, 4, 1.25), 0.95)\z
+                                     * doomsgate_contrast(doomsgate_detail_noise(234, 1/50, 4, 1), 0.95)\z
+                                     * doomsgate_detail_noise(643, 1/70, 4, 0.7),\z
                                      0, 3))"
   },
 
@@ -571,61 +571,61 @@ data:extend{
 
   {
     type = "noise-expression",
-    name = "vulcanus_resource_wobble_x",
-    expression = "vulcanus_wobble_x + 0.25 * vulcanus_wobble_large_x"
+    name = "doomsgate_resource_wobble_x",
+    expression = "doomsgate_wobble_x + 0.25 * doomsgate_wobble_large_x"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_resource_wobble_y",
-    expression = "vulcanus_wobble_y + 0.25 * vulcanus_wobble_large_y"
+    name = "doomsgate_resource_wobble_y",
+    expression = "doomsgate_wobble_y + 0.25 * doomsgate_wobble_large_y"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_starting_tungsten", -- don't use the slider for radius becuase it can make tungsten in the safe area
-    expression = "starting_spot_at_angle{ angle = vulcanus_basalts_angle - 10 * vulcanus_starting_direction,\z
-                                          distance = 450 * vulcanus_starting_area_radius,\z
+    name = "doomsgate_starting_tungsten", -- don't use the slider for radius becuase it can make tungsten in the safe area
+    expression = "starting_spot_at_angle{ angle = doomsgate_basalts_angle - 10 * doomsgate_starting_direction,\z
+                                          distance = 450 * doomsgate_starting_area_radius,\z
                                           radius = 30 / 1.5,\z
-                                          x_distortion = 0.5 * vulcanus_resource_wobble_x,\z
-                                          y_distortion = 0.5 * vulcanus_resource_wobble_y}"
+                                          x_distortion = 0.5 * doomsgate_resource_wobble_x,\z
+                                          y_distortion = 0.5 * doomsgate_resource_wobble_y}"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_starting_coal",
-    expression = "starting_spot_at_angle{ angle = vulcanus_ashlands_angle + 15 * vulcanus_starting_direction,\z
-                                          distance = 180 * vulcanus_starting_area_radius,\z
-                                          radius = 30 * vulcanus_coal_size,\z
-                                          x_distortion = 0.5 * vulcanus_resource_wobble_x,\z
-                                          y_distortion = 0.5 * vulcanus_resource_wobble_y}"
+    name = "doomsgate_starting_coal",
+    expression = "starting_spot_at_angle{ angle = doomsgate_ashlands_angle + 15 * doomsgate_starting_direction,\z
+                                          distance = 180 * doomsgate_starting_area_radius,\z
+                                          radius = 30 * doomsgate_coal_size,\z
+                                          x_distortion = 0.5 * doomsgate_resource_wobble_x,\z
+                                          y_distortion = 0.5 * doomsgate_resource_wobble_y}"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_starting_calcite",
-    expression = "starting_spot_at_angle{ angle = vulcanus_mountains_angle - 20 * vulcanus_starting_direction,\z
-                                          distance = 350 * vulcanus_starting_area_radius,\z
-                                          radius = 35 / 1.5 * vulcanus_calcite_size,\z
-                                          x_distortion = 0.5 * vulcanus_resource_wobble_x,\z
-                                          y_distortion = 0.5 * vulcanus_resource_wobble_y}"
+    name = "doomsgate_starting_calcite",
+    expression = "starting_spot_at_angle{ angle = doomsgate_mountains_angle - 20 * doomsgate_starting_direction,\z
+                                          distance = 350 * doomsgate_starting_area_radius,\z
+                                          radius = 35 / 1.5 * doomsgate_calcite_size,\z
+                                          x_distortion = 0.5 * doomsgate_resource_wobble_x,\z
+                                          y_distortion = 0.5 * doomsgate_resource_wobble_y}"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_starting_sulfur",
-    expression = "max(starting_spot_at_angle{ angle = vulcanus_mountains_angle + 10 * vulcanus_starting_direction,\z
-                                              distance = 590 * vulcanus_starting_area_radius,\z
+    name = "doomsgate_starting_sulfur",
+    expression = "max(starting_spot_at_angle{ angle = doomsgate_mountains_angle + 10 * doomsgate_starting_direction,\z
+                                              distance = 590 * doomsgate_starting_area_radius,\z
                                               radius = 30,\z
-                                              x_distortion = 0.75 * vulcanus_resource_wobble_x,\z
-                                              y_distortion = 0.75 * vulcanus_resource_wobble_y},\z
-                      starting_spot_at_angle{ angle = vulcanus_mountains_angle + 30 * vulcanus_starting_direction,\z
-                                              distance = 200 * vulcanus_starting_area_radius,\z
-                                              radius = 25 * vulcanus_sulfuric_acid_geyser_size,\z
-                                              x_distortion = 0.75 * vulcanus_resource_wobble_x,\z
-                                              y_distortion = 0.75 * vulcanus_resource_wobble_y})"
+                                              x_distortion = 0.75 * doomsgate_resource_wobble_x,\z
+                                              y_distortion = 0.75 * doomsgate_resource_wobble_y},\z
+                      starting_spot_at_angle{ angle = doomsgate_mountains_angle + 30 * doomsgate_starting_direction,\z
+                                              distance = 200 * doomsgate_starting_area_radius,\z
+                                              radius = 25 * doomsgate_sulfuric_acid_geyser_size,\z
+                                              x_distortion = 0.75 * doomsgate_resource_wobble_x,\z
+                                              y_distortion = 0.75 * doomsgate_resource_wobble_y})"
   },
   {
     type = "noise-function",
-    name = "vulcanus_spot_noise",
+    name = "doomsgate_spot_noise",
     parameters = {"seed", "count", "spacing", "span", "offset", "region_size", "density", "quantity", "radius", "favorability"},
-    expression = "spot_noise{x = x + vulcanus_resource_wobble_x,\z
-                             y = y + vulcanus_resource_wobble_y,\z
+    expression = "spot_noise{x = x + doomsgate_resource_wobble_x,\z
+                             y = y + doomsgate_resource_wobble_y,\z
                              seed0 = map_seed,\z
                              seed1 = seed,\z
                              candidate_spot_count = count,\z
@@ -643,8 +643,8 @@ data:extend{
   },
   {
     type = "noise-expression",
-    name = "vulcanus_basalts_resource_favorability",
-    expression = "clamp(((vulcanus_basalts_biome_full * (vulcanus_starting_area < 0.01)) - buffer) * contrast, 0, 1)",
+    name = "doomsgate_basalts_resource_favorability",
+    expression = "clamp(((doomsgate_basalts_biome_full * (doomsgate_starting_area < 0.01)) - buffer) * contrast, 0, 1)",
     local_expressions =
     {
       buffer = 0.3, -- push ores away from biome edges.
@@ -653,19 +653,19 @@ data:extend{
   },
   {
     type = "noise-expression",
-    name = "vulcanus_mountains_resource_favorability",
+    name = "doomsgate_mountains_resource_favorability",
     expression = "clamp(main_region - (mountain_volcano_spots > 0.78), 0, 1)",
     local_expressions =
     {
       buffer = 0.4, -- push ores away from biome edges.
       contrast = 2,
-      main_region = "clamp(((vulcanus_mountains_biome_full * (vulcanus_starting_area < 0.01)) - buffer) * contrast, 0, 1)"
+      main_region = "clamp(((doomsgate_mountains_biome_full * (doomsgate_starting_area < 0.01)) - buffer) * contrast, 0, 1)"
     }
   },
   {
     type = "noise-expression",
-    name = "vulcanus_mountains_sulfur_favorability",
-    expression = "clamp(((vulcanus_mountains_biome_full * (vulcanus_starting_area < 0.01)) - buffer) * contrast, 0, 1)",
+    name = "doomsgate_mountains_sulfur_favorability",
+    expression = "clamp(((doomsgate_mountains_biome_full * (doomsgate_starting_area < 0.01)) - buffer) * contrast, 0, 1)",
     local_expressions =
     {
       buffer = 0.3, -- push ores away from biome edges.
@@ -674,8 +674,8 @@ data:extend{
   },
   {
     type = "noise-expression",
-    name = "vulcanus_ashlands_resource_favorability",
-    expression = "clamp(((vulcanus_ashlands_biome_full * (vulcanus_starting_area < 0.01)) - buffer) * contrast, 0, 1)",
+    name = "doomsgate_ashlands_resource_favorability",
+    expression = "clamp(((doomsgate_ashlands_biome_full * (doomsgate_starting_area < 0.01)) - buffer) * contrast, 0, 1)",
     local_expressions =
     {
       buffer = 0.3, -- push ores away from biome edges.
@@ -684,14 +684,14 @@ data:extend{
   },
   {
     type = "noise-function",
-    name = "vulcanus_place_metal_spots",
+    name = "doomsgate_place_metal_spots",
     parameters = {"seed", "count", "offset", "size", "freq", "favor_biome"},
-    expression = "min(clamp(-1 + 4 * favor_biome, -1, 1), metal_spot_noise - vulcanus_hairline_cracks / 30000)",
+    expression = "min(clamp(-1 + 4 * favor_biome, -1, 1), metal_spot_noise - doomsgate_hairline_cracks / 30000)",
     local_expressions =
     {
-      metal_spot_noise = "vulcanus_spot_noise{seed = seed,\z
+      metal_spot_noise = "doomsgate_spot_noise{seed = seed,\z
                                               count = count,\z
-                                              spacing = vulcanus_ore_spacing,\z
+                                              spacing = doomsgate_ore_spacing,\z
                                               span = 3,\z
                                               offset = offset,\z
                                               region_size = 500 + 500 / freq,\z
@@ -703,11 +703,11 @@ data:extend{
   },
   {
     type = "noise-function",
-    name = "vulcanus_place_sulfur_spots",
+    name = "doomsgate_place_sulfur_spots",
     parameters = {"seed", "count", "offset", "size", "freq", "favor_biome"},
-    expression = "min(2 * favor_biome - 1, vulcanus_spot_noise{seed = seed,\z
+    expression = "min(2 * favor_biome - 1, doomsgate_spot_noise{seed = seed,\z
                                                                count = count,\z
-                                                               spacing = vulcanus_ore_spacing,\z
+                                                               spacing = doomsgate_ore_spacing,\z
                                                                span = 3,\z
                                                                offset = offset,\z
                                                                region_size = 450 + 450 / freq,\z
@@ -718,11 +718,11 @@ data:extend{
   },
   {
     type = "noise-function",
-    name = "vulcanus_place_non_metal_spots",
+    name = "doomsgate_place_non_metal_spots",
     parameters = {"seed", "count", "offset", "size", "freq", "favor_biome"},
-    expression = "min(2 * favor_biome - 1, vulcanus_spot_noise{seed = seed,\z
+    expression = "min(2 * favor_biome - 1, doomsgate_spot_noise{seed = seed,\z
                                                                count = count,\z
-                                                               spacing = vulcanus_ore_spacing,\z
+                                                               spacing = doomsgate_ore_spacing,\z
                                                                span = 3,\z
                                                                offset = offset,\z
                                                                region_size = 400 + 400 / freq,\z
@@ -734,145 +734,145 @@ data:extend{
 
   {
     type = "noise-expression",
-    name = "vulcanus_tungsten_ore_size",
+    name = "doomsgate_tungsten_ore_size",
     expression = "slider_rescale(control:tungsten_ore:size, 2)"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_tungsten_ore_region",
+    name = "doomsgate_tungsten_ore_region",
     -- -1 to 1: needs a positive region for resources & decoratives plus a subzero baseline and skirt for surrounding decoratives.
-    expression = "max(vulcanus_starting_tungsten,\z
-                      min(1 - vulcanus_starting_circle,\z
-                          vulcanus_place_metal_spots(789, 15, 2,\z
-                                                     vulcanus_tungsten_ore_size * min(1.2, vulcanus_ore_dist) * 25,\z
+    expression = "max(doomsgate_starting_tungsten,\z
+                      min(1 - doomsgate_starting_circle,\z
+                          doomsgate_place_metal_spots(789, 15, 2,\z
+                                                     doomsgate_tungsten_ore_size * min(1.2, doomsgate_ore_dist) * 25,\z
                                                      control:tungsten_ore:frequency,\z
-                                                     vulcanus_basalts_resource_favorability)))"
+                                                     doomsgate_basalts_resource_favorability)))"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_tungsten_ore_probability",
-    expression = "(control:tungsten_ore:size > 0) * (1000 * ((1 + vulcanus_tungsten_ore_region) * random_penalty_between(0.9, 1, 1) - 1))"
+    name = "doomsgate_tungsten_ore_probability",
+    expression = "(control:tungsten_ore:size > 0) * (1000 * ((1 + doomsgate_tungsten_ore_region) * random_penalty_between(0.9, 1, 1) - 1))"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_tungsten_ore_richness",
-    expression = "vulcanus_tungsten_ore_region * random_penalty_between(0.9, 1, 1)\z
-                  * 10000 * vulcanus_starting_area_multiplier\z
-                  * control:tungsten_ore:richness / vulcanus_tungsten_ore_size"
+    name = "doomsgate_tungsten_ore_richness",
+    expression = "doomsgate_tungsten_ore_region * random_penalty_between(0.9, 1, 1)\z
+                  * 10000 * doomsgate_starting_area_multiplier\z
+                  * control:tungsten_ore:richness / doomsgate_tungsten_ore_size"
   },
 
   {
     type = "noise-expression",
-    name = "vulcanus_coal_size",
+    name = "doomsgate_coal_size",
     expression = "slider_rescale(control:vulcanus_coal:size, 2)"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_coal_region",
+    name = "doomsgate_coal_region",
     -- -1 to 1: needs a positive region for resources & decoratives plus a subzero baseline and skirt for surrounding decoratives.
-    expression = "max(vulcanus_starting_coal,\z
-                      min(1 - vulcanus_starting_circle,\z
-                          vulcanus_place_non_metal_spots(782349, 12, 1,\z
-                                                         vulcanus_coal_size * min(1.2, vulcanus_ore_dist) * 25,\z
+    expression = "max(doomsgate_starting_coal,\z
+                      min(1 - doomsgate_starting_circle,\z
+                          doomsgate_place_non_metal_spots(782349, 12, 1,\z
+                                                         doomsgate_coal_size * min(1.2, doomsgate_ore_dist) * 25,\z
                                                          control:vulcanus_coal:frequency,\z
-                                                         vulcanus_ashlands_resource_favorability)))"
+                                                         doomsgate_ashlands_resource_favorability)))"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_coal_probability",
-    expression = "(control:vulcanus_coal:size > 0) * (1000 * ((1 + vulcanus_coal_region) * random_penalty_between(0.9, 1, 1) - 1))"
+    name = "doomsgate_coal_probability",
+    expression = "(control:vulcanus_coal:size > 0) * (1000 * ((1 + doomsgate_coal_region) * random_penalty_between(0.9, 1, 1) - 1))"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_coal_richness",
-    expression = "vulcanus_coal_region * random_penalty_between(0.9, 1, 1)\z
-                  * 18000 * vulcanus_starting_area_multiplier\z
-                  * control:vulcanus_coal:richness / vulcanus_coal_size"
+    name = "doomsgate_coal_richness",
+    expression = "doomsgate_coal_region * random_penalty_between(0.9, 1, 1)\z
+                  * 18000 * doomsgate_starting_area_multiplier\z
+                  * control:vulcanus_coal:richness / doomsgate_coal_size"
   },
 
   {
     type = "noise-expression",
-    name = "vulcanus_calcite_size",
+    name = "doomsgate_calcite_size",
     expression = "slider_rescale(control:calcite:size, 2)"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_calcite_region",
+    name = "doomsgate_calcite_region",
     -- -1 to 1: needs a positive region for resources & decoratives plus a subzero baseline and skirt for surrounding decoratives.
-    expression = "max(vulcanus_starting_calcite,\z
-                      min(1 - vulcanus_starting_circle,\z
-                          vulcanus_place_non_metal_spots(749, 12, 1,\z
-                                                         vulcanus_calcite_size * min(1.2, vulcanus_ore_dist) * 25,\z
+    expression = "max(doomsgate_starting_calcite,\z
+                      min(1 - doomsgate_starting_circle,\z
+                          doomsgate_place_non_metal_spots(749, 12, 1,\z
+                                                         doomsgate_calcite_size * min(1.2, doomsgate_ore_dist) * 25,\z
                                                          control:calcite:frequency,\z
-                                                         vulcanus_mountains_resource_favorability)))"
+                                                         doomsgate_mountains_resource_favorability)))"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_calcite_probability",
-    expression = "(control:calcite:size > 0) * (1000 * ((1 + vulcanus_calcite_region) * random_penalty_between(0.9, 1, 1) - 1))"
+    name = "doomsgate_calcite_probability",
+    expression = "(control:calcite:size > 0) * (1000 * ((1 + doomsgate_calcite_region) * random_penalty_between(0.9, 1, 1) - 1))"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_calcite_richness",
-    expression = "vulcanus_calcite_region * random_penalty_between(0.9, 1, 1)\z
-                  * 24000 * vulcanus_starting_area_multiplier\z
-                  * control:calcite:richness / vulcanus_calcite_size"
+    name = "doomsgate_calcite_richness",
+    expression = "doomsgate_calcite_region * random_penalty_between(0.9, 1, 1)\z
+                  * 24000 * doomsgate_starting_area_multiplier\z
+                  * control:calcite:richness / doomsgate_calcite_size"
   },
 
   {
     type = "noise-expression",
-    name = "vulcanus_sulfuric_acid_geyser_size",
+    name = "doomsgate_sulfuric_acid_geyser_size",
     expression = "slider_rescale(control:sulfuric_acid_geyser:size, 2)"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_sulfuric_acid_region",
+    name = "doomsgate_sulfuric_acid_region",
     -- -1 to 1: needs a positive region for resources & decoratives plus a subzero baseline and skirt for surrounding decoratives.
-    expression = "max(vulcanus_starting_sulfur,\z
-                      min(1 - vulcanus_starting_circle,\z
-                          vulcanus_place_sulfur_spots(759, 9, 0,\z
-                                                      vulcanus_sulfuric_acid_geyser_size * min(1.2, vulcanus_ore_dist) * 25,\z
+    expression = "max(doomsgate_starting_sulfur,\z
+                      min(1 - doomsgate_starting_circle,\z
+                          doomsgate_place_sulfur_spots(759, 9, 0,\z
+                                                      doomsgate_sulfuric_acid_geyser_size * min(1.2, doomsgate_ore_dist) * 25,\z
                                                       control:sulfuric_acid_geyser:frequency,\z
-                                                      vulcanus_mountains_sulfur_favorability)))"
+                                                      doomsgate_mountains_sulfur_favorability)))"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_sulfuric_acid_patches",
+    name = "doomsgate_sulfuric_acid_patches",
     -- small wavelength noise (5 tiles-ish) to make geyser placement patchy but consistent between resources and decoratives
     expression = "0.8 * abs(multioctave_noise{x = x, y = y, persistence = 0.7, seed0 = map_seed, seed1 = 21000, octaves = 2, input_scale = 1/3})"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_sulfuric_acid_region_patchy",
-    expression = "(1 + vulcanus_sulfuric_acid_region) * (0.5 + 0.5 * vulcanus_sulfuric_acid_patches) - 1"
+    name = "doomsgate_sulfuric_acid_region_patchy",
+    expression = "(1 + doomsgate_sulfuric_acid_region) * (0.5 + 0.5 * doomsgate_sulfuric_acid_patches) - 1"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_sulfuric_acid_geyser_probability",
-    expression = "(control:sulfuric_acid_geyser:size > 0) * (0.025 * ((vulcanus_sulfuric_acid_region_patchy > 0) + 2 * vulcanus_sulfuric_acid_region_patchy))"
+    name = "doomsgate_sulfuric_acid_geyser_probability",
+    expression = "(control:sulfuric_acid_geyser:size > 0) * (0.025 * ((doomsgate_sulfuric_acid_region_patchy > 0) + 2 * doomsgate_sulfuric_acid_region_patchy))"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_sulfuric_acid_geyser_richness",
-    expression = "(vulcanus_sulfuric_acid_region > 0) * random_penalty_between(0.5, 1, 1)\z
-                  * 80000 * 40 * vulcanus_richness_multiplier * vulcanus_starting_area_multiplier\z
-                  * control:sulfuric_acid_geyser:richness / vulcanus_sulfuric_acid_geyser_size"
+    name = "doomsgate_sulfuric_acid_geyser_richness",
+    expression = "(doomsgate_sulfuric_acid_region > 0) * random_penalty_between(0.5, 1, 1)\z
+                  * 80000 * 40 * doomsgate_richness_multiplier * doomsgate_starting_area_multiplier\z
+                  * control:sulfuric_acid_geyser:richness / doomsgate_sulfuric_acid_geyser_size"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_ore_dist",
+    name = "doomsgate_ore_dist",
     expression = "max(1, distance / 4000)"
   },
 
   -- DECORATIVES
   {
     type = "noise-expression",
-    name = "vulcanus_decorative_knockout", -- small wavelength noise (5 tiles-ish) to make decoratives patchy
+    name = "doomsgate_decorative_knockout", -- small wavelength noise (5 tiles-ish) to make decoratives patchy
     expression = "multioctave_noise{x = x, y = y, persistence = 0.7, seed0 = map_seed, seed1 = 1300000, octaves = 2, input_scale = 1/3}"
   },
   {
     type = "noise-expression",
-    name = "vulcanus_rock_noise",
+    name = "doomsgate_rock_noise",
     expression = "multioctave_noise{x = x,\z
                                     y = y,\z
                                     seed0 = map_seed,\z
@@ -886,9 +886,9 @@ data:extend{
 
   {
     type = "noise-expression",
-    name = "vulcanus_tree",
-    expression = "min(10 * (vulcanus_ashlands_biome - 0.9),\z
-                      -1.5 + 1.5 * moisture + 0.5 * (moisture > 0.9) - 0.5 * aux + 0.5 * vulcanus_decorative_knockout)"
+    name = "doomsgate_tree",
+    expression = "min(10 * (doomsgate_ashlands_biome - 0.9),\z
+                      -1.5 + 1.5 * moisture + 0.5 * (moisture > 0.9) - 0.5 * aux + 0.5 * doomsgate_decorative_knockout)"
   },
 
   -- Demolishers
@@ -911,8 +911,8 @@ data:extend{
   {
     type = "noise-expression",
     name = "demolisher_starting_area",
-    expression = "0 < starting_spot_at_angle{angle = vulcanus_mountains_angle - 5 * vulcanus_starting_direction,\z
-                                                  distance = 100 * vulcanus_starting_area_radius + 32,\z
+    expression = "0 < starting_spot_at_angle{angle = doomsgate_mountains_angle - 5 * doomsgate_starting_direction,\z
+                                                  distance = 100 * doomsgate_starting_area_radius + 32,\z
                                                   radius = 7 * 32,\z
                                                   x_distortion = 0,\z
                                                   y_distortion = 0}"
@@ -931,20 +931,20 @@ local doomsgate_map_gen = function()
   {
     property_expression_names =
     {
-      elevation = "vulcanus_elevation",
-      temperature = "vulcanus_temperature",
-      moisture = "vulcanus_moisture",
-      aux = "vulcanus_aux",
+      elevation = "doomsgate_elevation",
+      temperature = "doomsgate_temperature",
+      moisture = "doomsgate_moisture",
+      aux = "doomsgate_aux",
       cliffiness = "cliffiness_basic",
       cliff_elevation = "cliff_elevation_from_elevation",
-      ["entity:tungsten-ore:probability"] = "vulcanus_tungsten_ore_probability",
-      ["entity:tungsten-ore:richness"] = "vulcanus_tungsten_ore_richness",
-      ["entity:coal:probability"] = "vulcanus_coal_probability",
-      ["entity:coal:richness"] = "vulcanus_coal_richness",
-      ["entity:calcite:probability"] = "vulcanus_calcite_probability",
-      ["entity:calcite:richness"] = "vulcanus_calcite_richness",
-      ["entity:sulfuric-acid-geyser:probability"] = "vulcanus_sulfuric_acid_geyser_probability",
-      ["entity:sulfuric-acid-geyser:richness"] = "vulcanus_sulfuric_acid_geyser_richness",
+      ["entity:tungsten-ore:probability"] = "doomsgate_tungsten_ore_probability",
+      ["entity:tungsten-ore:richness"] = "doomsgate_tungsten_ore_richness",
+      ["entity:coal:probability"] = "doomsgate_coal_probability",
+      ["entity:coal:richness"] = "doomsgate_coal_richness",
+      ["entity:calcite:probability"] = "doomsgate_calcite_probability",
+      ["entity:calcite:richness"] = "doomsgate_calcite_richness",
+      ["entity:sulfuric-acid-geyser:probability"] = "doomsgate_sulfuric_acid_geyser_probability",
+      ["entity:sulfuric-acid-geyser:richness"] = "doomsgate_sulfuric_acid_geyser_richness",
     },
     cliff_settings =
     {
