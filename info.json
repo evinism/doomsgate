@@ -1,0 +1,11 @@
+{
+  "name": "doomsgate",
+  "version": "0.0.1",
+  "title": "Doom's Gate",
+  "author": "evinism + akulla",
+  "homepage": "https://github.com/evinism/doomsgate",
+  "factorio_version": "2.0",
+  "dependencies": ["base", "space-age >= 2.0.23"],
+  "space_travel_required": true,
+  "description": "Go to hell. Kill demons. Kill more demons. Kill even more demons."
+}
