@@ -937,6 +937,8 @@ local doomsgate_map_gen = function()
       aux = "doomsgate_aux",
       cliffiness = "cliffiness_basic",
       cliff_elevation = "cliff_elevation_from_elevation",
+      enemy_base_radius = "gleba_enemy_base_radius",
+      enemy_base_frequency = "gleba_enemy_base_frequency",
       ["entity:tungsten-ore:probability"] = "doomsgate_tungsten_ore_probability",
       ["entity:tungsten-ore:richness"] = "doomsgate_tungsten_ore_richness",
       ["entity:coal:probability"] = "doomsgate_coal_probability",
@@ -952,13 +954,6 @@ local doomsgate_map_gen = function()
       cliff_elevation_interval = 120,
       cliff_elevation_0 = 70
     },
-    territory_settings =
-    {
-      units = {"small-demolisher", "medium-demolisher", "big-demolisher"},
-      territory_index_expression = "demolisher_territory_expression",
-      territory_variation_expression = "demolisher_variation_expression",
-      minimum_territory_size = 10
-    },
     autoplace_controls =
     {
       ["vulcanus_coal"] = {},
@@ -966,6 +961,7 @@ local doomsgate_map_gen = function()
       ["tungsten_ore"] = {},
       ["calcite"] = {},
       ["vulcanus_volcanism"] = {},
+      ["enemy-base"] = {},
       --["rocks"] = {}, -- can't add the rocks control otherwise nauvis rocks spawn
     },
     autoplace_settings =
